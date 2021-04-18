@@ -1,0 +1,39 @@
+{
+    "name": "bytesystems/settings",
+    "description": "A settings manager with doctrine storage",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel Heim",
+            "email": "heim@bytesystems.de"
+        }
+    ],
+    "require": {
+        "php": "^7.4",
+        "symfony/config": "^4.4|^5.0",
+        "symfony/dependency-injection": "^4.4|^5.0",
+        "doctrine/orm": "^2.6",
+        "symfony/property-access": "^5.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bytesystems\\SettingsBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Bytesystems\\SettingsBundle\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "^5.2",
+        "symfony/http-kernel": "^4.4|^5.0",
+        "doctrine/doctrine-bundle": "^2.3",
+        "symfony/framework-bundle": "^4.4|^5.0",
+        "symfony/yaml": "^5.2",
+        "liip/test-fixtures-bundle": "^1.11",
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "phpstan/phpstan": "^0.12.83"
+    }
+}
