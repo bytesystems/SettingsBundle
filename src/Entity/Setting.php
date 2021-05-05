@@ -5,11 +5,10 @@ namespace Bytesystems\SettingsBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\service_locator;
 
 /**
- * @ORM\Table(name="bytesystems_setting_definition")
  * @ORM\Entity()
+ * @ORM\Table(name="bytesystems_setting_definition")
  */
 class Setting
 {
@@ -101,7 +100,7 @@ class Setting
 
     public function setScope($scope): self
     {
-        $scopes = [self::SCOPE_APP, self::SCOPE_USER,self::SCOPE_MIXED];
+        $scopes = [self::SCOPE_DEFAULT, self::SCOPE_GLOBAL,self::SCOPE_USER];
         if (!in_array($scope, $scopes)) {
             throw new \InvalidArgumentException(sprintf("Invalid scope, allowed values: %s",join(", ",$scopes)));
         }

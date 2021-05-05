@@ -2,15 +2,14 @@
 
 namespace Bytesystems\SettingsBundle\Entity;
 
-use Bytesystems\SettingsBundle\Repository\SettingValueRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\UniqueConstraint;
 
 /**
+ * @ORM\Entity(repositoryClass="Bytesystems\SettingsBundle\Repository\SettingValueRepository")
  * @ORM\Table(name="bytesystems_setting_value",uniqueConstraints={
  *        @UniqueConstraint(name="setting_owner_unique",columns={"setting_key", "owner"})
  * })
- * @ORM\Entity(repositoryClass=SettingValueRepository::class)
  */
 class SettingValue
 {

@@ -4,7 +4,6 @@
 namespace Bytesystems\SettingsBundle\Repository;
 
 
-use Bytesystems\SettingsBundle\Entity\Setting;
 use Bytesystems\SettingsBundle\Entity\SettingValue;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -18,12 +17,10 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class SettingValueRepository extends ServiceEntityRepository
 {
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, SettingValue::class);
     }
-
 
     public function findValueEntry(string $key, ?string $ownerKey = null)
     {

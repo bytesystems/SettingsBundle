@@ -34,10 +34,10 @@ class SettingManager
      */
     private $settingValueRepository;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em, SettingValueRepository $repository)
     {
         $this->em = $em;
-        $this->settingValueRepository = $this->em->getRepository(SettingValue::class);
+        $this->settingValueRepository = $repository;
     }
 
     public function setWithoutFlush(string $key, $value, ?SettingOwnerInterface $owner = null)
@@ -48,6 +48,7 @@ class SettingManager
     public function set(string $key, $value, ?SettingOwnerInterface $owner = null)
     {
         $this->loadSettingDefinition();
+        $this->loadSettingValues($owner);
 
         if(!array_key_exists($key,$this->settings))
         {
@@ -84,6 +85,7 @@ class SettingManager
 
     public function get(string $key, ?SettingOwnerInterface $owner = null, $default = null)
     {
+
         $this->loadSettingDefinition();
         $this->loadSettingValues($owner);
 
@@ -123,6 +125,20 @@ class SettingManager
         return null === $value ? $default : $value;
     }
 
+
+    public function all(?SettingOwnerInterface $owner = null)
+    {
+        $this->loadSettingDefinition();
+        $this->loadSettingValues($owner);
+        return $this->settingValues;
+    }
+
+    public function config()
+    {
+        $this->loadSettingDefinition();
+        return $this->settings;
+    }
+
     private function loadSettingDefinition()
     {
         if(null !== $this->settings) return;
@@ -139,16 +155,16 @@ class SettingManager
             $this->settings[$key] = $setting;
         }
     }
-
     private function loadSettingValues(?SettingOwnerInterface $owner = null)
     {
-        if(null !== $this->settingValues && null === $owner) return;
+        if(null !== $this->settingValues && null === $owner)  return;
         if(null !== $owner && array_key_exists($owner->getUniqueIdentifierForSettings(),$this->settingValues ?? [])) return;
 
         $qb = $this->em->createQueryBuilder()
             ->select(['sv.owner','sv.value','IDENTITY(sv.setting) as key'])
             ->from(SettingValue::class,'sv')
             ->where('sv.owner is null');
+
 
         if(null !== $owner)
         {

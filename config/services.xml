@@ -5,12 +5,24 @@
         https://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service class="Bytesystems\SettingsBundle\Repository\SettingValueRepository" id="bytesystems_settings.repository.setting_value_repository">
+        <service class="Bytesystems\SettingsBundle\Repository\SettingValueRepository" id="bytesystems_settings.repository.setting_value_repository" public="false">
             <argument type="service" id="doctrine"/>
+            <tag name="doctrine.repository_service"/>
         </service>
-        <service class="Bytesystems\SettingsBundle\SettingManager" id="bytesystems_settings.setting_manager">
-            <argument type="service" id="doctrine.orm.entity_manager.abstract"/>
+        <service id="Bytesystems\SettingsBundle\Repository\SettingValueRepository" alias="bytesystems_settings.repository.setting_value_repository" />
+
+        <service class="Bytesystems\SettingsBundle\SettingManager" id="bytesystems_settings.setting_manager" public="true">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="bytesystems_settings.repository.setting_value_repository" />
         </service>
+        <service id="Bytesystems\SettingsBundle\SettingManager" alias="bytesystems_settings.setting_manager" />
+
+        <service class="Bytesystems\SettingsBundle\Twig\SettingsExtension" id="bytesystems_settings.twig.settings_extension">
+            <argument id="bytesystems_settings.setting_manager" type="service"/>
+            <tag name="twig.extension"/>
+        </service>
+        <service id="Bytesystems\SettingsBundle\Twig\SettingsExtension" alias="bytesystems_settings.twig.settings_extension" />
+
 
     </services>
 </container>

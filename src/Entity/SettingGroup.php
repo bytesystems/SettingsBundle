@@ -48,10 +48,57 @@ class SettingGroup
         $this->settings = new ArrayCollection();
     }
 
-    public function getKey(): ?string
+    /**
+     * @return mixed
+     */
+    public function getKey()
     {
         return $this->key;
     }
+
+    /**
+     * @param mixed $key
+     */
+    public function setKey($key): self
+    {
+        $this->key = $key;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+        return $this;
+    }
+
 
     /**
      * @return Collection|Setting[]

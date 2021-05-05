@@ -18,7 +18,7 @@ class AllowedSettingValue
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Bytesystems\SettingsBundle\Setting", inversedBy="allowedSettingValues")
+     * @ORM\ManyToOne(targetEntity="Bytesystems\SettingsBundle\Entity\Setting", inversedBy="allowedSettingValues")
      * @ORM\JoinColumn(nullable=false,name="setting_key", referencedColumnName="setting_key")
      */
     private $setting;
