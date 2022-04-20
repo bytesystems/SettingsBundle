@@ -16,12 +16,5 @@
             <argument type="service" id="bytesystems_settings.repository.setting_value_repository" />
         </service>
         <service id="Bytesystems\SettingsBundle\SettingManager" alias="bytesystems_settings.setting_manager" />
-
-        <service class="Bytesystems\SettingsBundle\Twig\SettingsExtension" id="bytesystems_settings.twig.settings_extension">
-            <argument id="bytesystems_settings.setting_manager" type="service"/>
-            <tag name="twig.extension"/>
-        </service>
-
-
     </services>
 </container>
