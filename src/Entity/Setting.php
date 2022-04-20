@@ -78,9 +78,44 @@ class Setting
      */
     protected $parentSetting;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Bytesystems\SettingsBundle\Entity\SettingValue", mappedBy="setting")
+     */
+    private $settingValues;
+
     public function __construct()
     {
         $this->allowedSettingValues = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|SettingValue[]
+     */
+    public function getSettingValues(): Collection
+    {
+        return $this->settingValues;
+    }
+
+    public function addSettingValue(SettingValue $settingValue): self
+    {
+        if (!$this->settingValues->contains($settingValue)) {
+            $this->settingValues[] = $settingValue;
+            $settingValue->setSetting($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSettingValue(SettingValue $settingValue): self
+    {
+        if ($this->settingValues->removeElement($settingValue)) {
+            // set the owning side to null (unless already changed)
+            if ($settingValue->getSetting() === $this) {
+                $settingValue->setSetting(null);
+            }
+        }
+
+        return $this;
     }
 
     public function getKey(): ?string
@@ -179,6 +214,18 @@ class Setting
         $this->valueMax = $valueMax;
 
         return $this;
+    }
+
+    public function getValues()
+    {
+        $values = [];
+        foreach ($this->settingValues as $settingValue) {
+            $values[] = [
+                ['owner' => $settingValue->getOwner(),
+                 'value' => $settingValue->getValue()
+                    ]]
+                ;
+        }
     }
 
     /**
