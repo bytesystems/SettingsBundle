@@ -21,7 +21,6 @@
             <argument id="bytesystems_settings.setting_manager" type="service"/>
             <tag name="twig.extension"/>
         </service>
-        <service id="Bytesystems\SettingsBundle\Twig\SettingsExtension" alias="bytesystems_settings.twig.settings_extension" />
 
 
     </services>
