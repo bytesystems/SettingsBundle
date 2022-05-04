@@ -5,16 +5,16 @@
         https://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="Bytesystems\SettingsBundle\Repository\SettingValueRepository" alias="bytesystems_settings.repository.setting_value_repository" public="false">
+        <service id="Bytesystems\SettingsBundle\Repository\SettingValueRepository" public="false">
             <argument type="service" id="doctrine"/>
             <tag name="doctrine.repository_service"/>
         </service>
-<!--        <service id="Bytesystems\SettingsBundle\Repository\SettingValueRepository" alias="bytesystems_settings.repository.setting_value_repository" />-->
+        <service class="Bytesystems\SettingsBundle\Repository\SettingValueRepository" id="bytesystems_settings.repository.setting_value_repository" />
 
-        <service id="Bytesystems\SettingsBundle\SettingManager" alias="bytesystems_settings.setting_manager" public="true">
+        <service id="Bytesystems\SettingsBundle\SettingManager" public="true">
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="bytesystems_settings.repository.setting_value_repository" />
         </service>
-<!--        <service id="Bytesystems\SettingsBundle\SettingManager" alias="bytesystems_settings.setting_manager" />-->
+        <!--        <service id="Bytesystems\SettingsBundle\SettingManager" alias="bytesystems_settings.setting_manager" />-->
     </services>
 </container>
