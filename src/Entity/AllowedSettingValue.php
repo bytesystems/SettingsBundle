@@ -18,7 +18,7 @@ class AllowedSettingValue
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Bytesystems\SettingsBundle\Entity\Setting", inversedBy="allowedSettingValues")
+     * @ORM\ManyToOne(targetEntity="SettingDefinition", inversedBy="allowedSettingValues")
      * @ORM\JoinColumn(nullable=false,name="setting_key", referencedColumnName="setting_key")
      */
     private $setting;
@@ -33,12 +33,12 @@ class AllowedSettingValue
         return $this->id;
     }
 
-    public function getSetting(): ?Setting
+    public function getSetting(): ?SettingDefinition
     {
         return $this->setting;
     }
 
-    public function setSetting(?Setting $setting): self
+    public function setSetting(?SettingDefinition $setting): self
     {
         $this->setting = $setting;
 

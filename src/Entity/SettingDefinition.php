@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Table(name="bytesystems_setting_definition")
  */
-class Setting
+class SettingDefinition
 {
     const SCOPE_GLOBAL = 'global';
     const SCOPE_USER = 'user';
@@ -25,7 +25,7 @@ class Setting
     /**
      * @ORM\Column(type="string", length=20)
      */
-    protected $scope;
+    protected $scope = self::SCOPE_DEFAULT;
 
     /**
      * @ORM\Column(type="string", length=60)
@@ -40,12 +40,12 @@ class Setting
     /**
      * @ORM\Column(type="boolean")
      */
-    protected $isConstrained;
+    protected $isConstrained = false;
 
     /**
      * @ORM\Column(type="string", length=40)
      */
-    protected $dataType;
+    protected $dataType = 'string';
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -58,7 +58,7 @@ class Setting
     protected $valueMax;
 
     /**
-     * @ORM\OneToMany(targetEntity="Bytesystems\SettingsBundle\Entity\AllowedSettingValue", mappedBy="setting", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Bytesystems\SettingsBundle\Entity\AllowedSettingValue", mappedBy="setting", cascade={"persist"}, orphanRemoval=true)
      */
     protected $allowedSettingValues;
 
@@ -79,13 +79,14 @@ class Setting
     protected $parentSetting;
 
     /**
-     * @ORM\OneToMany(targetEntity="Bytesystems\SettingsBundle\Entity\SettingValue", mappedBy="setting")
+     * @ORM\OneToMany(targetEntity="Bytesystems\SettingsBundle\Entity\SettingValue", mappedBy="setting", cascade={"persist"}, orphanRemoval=true)
      */
     private $settingValues;
 
     public function __construct()
     {
         $this->allowedSettingValues = new ArrayCollection();
+        $this->settingValues = new ArrayCollection();
     }
 
     /**
@@ -102,7 +103,6 @@ class Setting
             $this->settingValues[] = $settingValue;
             $settingValue->setSetting($this);
         }
-
         return $this;
     }
 
@@ -214,18 +214,6 @@ class Setting
         $this->valueMax = $valueMax;
 
         return $this;
-    }
-
-    public function getValues()
-    {
-        $values = [];
-        foreach ($this->settingValues as $settingValue) {
-            $values[] = [
-                ['owner' => $settingValue->getOwner(),
-                 'value' => $settingValue->getValue()
-                    ]]
-                ;
-        }
     }
 
     /**

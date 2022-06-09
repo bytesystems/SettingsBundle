@@ -29,7 +29,7 @@ class SettingGroup
     protected $description;
 
     /**
-     * @ORM\OneToMany(targetEntity="Bytesystems\SettingsBundle\Entity\Setting", mappedBy="settingGroup", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="SettingDefinition", mappedBy="settingGroup", orphanRemoval=true)
      */
     protected $settings;
 
@@ -101,14 +101,14 @@ class SettingGroup
 
 
     /**
-     * @return Collection|Setting[]
+     * @return Collection|SettingDefinition[]
      */
     public function getSettings(): Collection
     {
         return $this->settings;
     }
 
-    public function addSetting(Setting $setting): self
+    public function addSetting(SettingDefinition $setting): self
     {
         if (!$this->settings->contains($setting)) {
             $this->settings[] = $setting;
@@ -118,7 +118,7 @@ class SettingGroup
         return $this;
     }
 
-    public function removeSetting(Setting $setting): self
+    public function removeSetting(SettingDefinition $setting): self
     {
         if ($this->settings->contains($setting)) {
             $this->settings->removeElement($setting);

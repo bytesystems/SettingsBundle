@@ -1,0 +1,39 @@
+framework:
+  secret: secret
+  test: ~
+  profiler:
+    collect: false
+doctrine:
+  dbal:
+    driver: pdo_sqlite
+    path: "%kernel.cache_dir%/test.db"
+    url: null
+  orm:
+    entity_managers:
+      default:
+        mappings:
+          SettingsBundle:
+            type: annotation
+            dir: src/Entity
+            prefix: Bytesystems\SettingsBundle
+          SettingsBundleTest:
+            type: annotation
+            dir: tests/Entity
+            prefix: Bytesystems\SettingsBundle\Tests
+liip_test_fixtures:
+  cache_db:
+    sqlite: liip_test_fixtures.services_database_backup.sqlite
+services:
+  _defaults:
+    autowire: true
+    public: true
+  Bytesystems\SettingsBundle\Tests\Fixtures\:
+    resource: 'Fixtures/*'
+    tags: ['doctrine.fixture.orm']
+  Bytesystems\SettingsBundle\:
+    resource: '../src/*'
+    exclude: '../src/{DependencyInjection,Entity,Token}'
+
+
+
+
