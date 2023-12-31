@@ -15,8 +15,8 @@ use Doctrine\Persistence\ObjectRepository;
 
 class SettingManager
 {
-    const GLOBAL_KEY = 'global';
-    const VALUE_WITHOUT_OWNER = 'setting_value_without_owner';
+    public const GLOBAL_KEY = 'global';
+    public const VALUE_WITHOUT_OWNER = 'setting_value_without_owner';
 
     /**
      * @var array
@@ -54,9 +54,7 @@ class SettingManager
         /* @var \Bytesystems\SettingsBundle\Entity\SettingDefinition */
         $setting = $qb->getQuery()->getOneOrNullResult();
 
-        $values = $setting->getSettingValues()->filter(function ($sv) use ($ownerKey) {
-            return $sv->getOwner() === $ownerKey;
-        });
+        $values = $setting->getSettingValues()->filter(fn($sv) => $sv->getOwner() === $ownerKey);
 
         if($setting->getIsConstrained())
         {
@@ -162,10 +160,10 @@ class SettingManager
         }
 
         return match ($this->settings[$key]['dataType']) {
-            'int' => (int)(null === $value ? $default : $value),
-            'decimal', 'float', 'percent', 'currency' => (float)(null === $value ? $default : $value),
-            'bool' => (boolean)(null === $value ? $default : $value),
-            default => null === $value ? $default : $value,
+            'int' => (int)($value ?? $default),
+            'decimal', 'float', 'percent', 'currency' => (float)($value ?? $default),
+            'bool' => (boolean)($value ?? $default),
+            default => $value ?? $default,
         };
 
     }
@@ -238,7 +236,7 @@ class SettingManager
 
         $setting->values = [];
         foreach ($item->getSettingValues() as $settingValue) {
-            $key = null === $settingValue->getOwner() ? self::VALUE_WITHOUT_OWNER : $settingValue->getOwner();
+            $key = $settingValue->getOwner() ?? self::VALUE_WITHOUT_OWNER;
 
             $setting->values[$key] = $settingValue->getValue();
         }
@@ -286,7 +284,7 @@ class SettingManager
 
         foreach ($values as $value) {
             $key = $value['key'];
-            $scope = null === $value['owner'] ? self::GLOBAL_KEY : $value['owner'];
+            $scope = $value['owner'] ?? self::GLOBAL_KEY;
             $this->settingValues[$scope][$key] = $value['value'];
         }
     }

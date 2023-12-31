@@ -25,7 +25,6 @@ class SettingsBundleTest extends KernelTestCase
 
     protected function setUp():void
     {
-        parent::setUp();
         $kernel = self::bootKernel();
         $application = new Application(self::$kernel);
         $application->setAutoExit(false);

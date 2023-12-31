@@ -6,82 +6,60 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="bytesystems_setting_definition")
- */
+#[ORM\Table(name: 'bytesystems_setting_definition')]
+#[ORM\Entity]
 class SettingDefinition
 {
-    const SCOPE_GLOBAL = 'global';
-    const SCOPE_USER = 'user';
-    const SCOPE_DEFAULT = 'default';
+    public const SCOPE_GLOBAL = 'global';
+    public const SCOPE_USER = 'user';
+    public const SCOPE_DEFAULT = 'default';
+
+    #[ORM\Id]
+    #[ORM\Column(name: 'setting_key', type: \Doctrine\DBAL\Types\Types::STRING, length: 40)]
+    protected ?string $key = null;
+
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 20)]
+    protected ?string $scope = self::SCOPE_DEFAULT;
+
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 60)]
+    protected ?string $name = null;
+
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::TEXT, nullable: true)]
+    protected ?string $description = null;
+
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::BOOLEAN)]
+    protected ?bool $isConstrained = false;
+
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 40)]
+    protected ?string $dataType = 'string';
+
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
+    protected ?string $valueMin = null;
+
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 255, nullable: true)]
+    protected ?string $valueMax = null;
 
     /**
-     * @ORM\Id()
-     * @ORM\Column(name="setting_key",type="string",length=40)
+     * @var \Doctrine\Common\Collections\Collection<\Bytesystems\SettingsBundle\Entity\AllowedSettingValue>
      */
-    protected $key;
+    #[ORM\OneToMany(targetEntity: \Bytesystems\SettingsBundle\Entity\AllowedSettingValue::class, mappedBy: 'setting', cascade: ['persist'], orphanRemoval: true)]
+    protected \Doctrine\Common\Collections\Collection $allowedSettingValues;
+
+    #[ORM\ManyToOne(targetEntity: \Bytesystems\SettingsBundle\Entity\SettingGroup::class, inversedBy: 'settings')]
+    #[ORM\JoinColumn(nullable: false, name: 'group_key', referencedColumnName: 'group_key')]
+    protected ?\Bytesystems\SettingsBundle\Entity\SettingGroup $settingGroup = null;
+
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::INTEGER)]
+    protected ?int $sortOrder = null;
+
+    #[ORM\Column(type: \Doctrine\DBAL\Types\Types::STRING, length: 40, nullable: true)]
+    protected ?string $parentSetting = null;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @var \Doctrine\Common\Collections\Collection<\Bytesystems\SettingsBundle\Entity\SettingValue>
      */
-    protected $scope = self::SCOPE_DEFAULT;
-
-    /**
-     * @ORM\Column(type="string", length=60)
-     */
-    protected $name;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    protected $description;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    protected $isConstrained = false;
-
-    /**
-     * @ORM\Column(type="string", length=40)
-     */
-    protected $dataType = 'string';
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    protected $valueMin;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    protected $valueMax;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Bytesystems\SettingsBundle\Entity\AllowedSettingValue", mappedBy="setting", cascade={"persist"}, orphanRemoval=true)
-     */
-    protected $allowedSettingValues;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Bytesystems\SettingsBundle\Entity\SettingGroup", inversedBy="settings")
-     * @ORM\JoinColumn(nullable=false,name="group_key", referencedColumnName="group_key")
-     */
-    protected $settingGroup;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    protected $sortOrder;
-
-    /**
-     * @ORM\Column(type="string", length=40, nullable=true)
-     */
-    protected $parentSetting;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Bytesystems\SettingsBundle\Entity\SettingValue", mappedBy="setting", cascade={"persist"}, orphanRemoval=true)
-     */
-    private $settingValues;
+    #[ORM\OneToMany(targetEntity: \Bytesystems\SettingsBundle\Entity\SettingValue::class, mappedBy: 'setting', cascade: ['persist'], orphanRemoval: true)]
+    private \Doctrine\Common\Collections\Collection $settingValues;
 
     public function __construct()
     {

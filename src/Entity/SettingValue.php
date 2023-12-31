@@ -2,50 +2,46 @@
 
 namespace Bytesystems\SettingsBundle\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\UniqueConstraint;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="bytesystems_setting_value",uniqueConstraints={
- *        @UniqueConstraint(name="setting_owner_unique",columns={"setting_key", "owner"})
- * })
- */
+#[ORM\Entity]
+#[Orm\Table(
+    name: "bytesystems_setting_value",
+    uniqueConstraints: [
+        new ORM\UniqueConstraint(
+            name: "setting_owner_unique",
+            columns: ["setting_key", "owner"]
+        )
+    ]
+)]
 class SettingValue
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    protected $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    protected ?int $id = null;
 
     /**
      * @var string|null
-     * @ORM\Column(name="owner", type="string", length=255, nullable=true)
      */
-    protected $owner;
+    #[ORM\Column(name: 'owner', type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $owner = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SettingDefinition", inversedBy="settingValues")
-     * @ORM\JoinColumn(nullable=false,name="setting_key", referencedColumnName="setting_key")
-     */
-    protected $setting;
+    #[ORM\ManyToOne(targetEntity: 'SettingDefinition', inversedBy: 'settingValues')]
+    #[ORM\JoinColumn(nullable: false, name: 'setting_key', referencedColumnName: 'setting_key')]
+    protected ?\Bytesystems\SettingsBundle\Entity\SettingDefinition $setting = null;
 
     /**
      * @var string|null
-     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $value;
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $value = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    protected $textValue;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    protected ?string $textValue = null;
 
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     */
+    #[ORM\Column(type: Types::JSON, nullable: true)]
     protected $jsonValue = [];
 
     public function getId(): ?int

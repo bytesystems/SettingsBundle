@@ -4,44 +4,34 @@ namespace Bytesystems\SettingsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="bytesystems_setting_group")
- * @ORM\Entity()
- */
+#[ORM\Table(name: 'bytesystems_setting_group')]
+#[ORM\Entity]
 class SettingGroup
 {
-    /**
-     * @ORM\Id()
-     * @ORM\Column(name="group_key",type="string",length=40)
-     */
-    protected $key;
+    #[ORM\Id]
+    #[ORM\Column(name: 'group_key', type: Types::STRING, length: 40)]
+    protected ?string $key = null;
+
+    #[ORM\Column(type: Types::STRING, length: 60)]
+    protected ?string $name = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    protected ?string $description = null;
 
     /**
-     * @ORM\Column(type="string", length=60)
+     * @var \Doctrine\Common\Collections\Collection<\Bytesystems\SettingsBundle\Entity\SettingDefinition>
      */
-    protected $name;
+    #[ORM\OneToMany(mappedBy: 'settingGroup', targetEntity: 'SettingDefinition', orphanRemoval: true)]
+    protected \Doctrine\Common\Collections\Collection $settings;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    protected $description;
+    #[ORM\Column(type: Types::INTEGER)]
+    protected ?int $sortOrder = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity="SettingDefinition", mappedBy="settingGroup", orphanRemoval=true)
-     */
-    protected $settings;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    protected $sortOrder;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    protected $role;
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: true)]
+    protected ?string $role = null;
 
     public function __construct()
     {
@@ -49,43 +39,37 @@ class SettingGroup
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getKey()
+    public function getKey(): ?string
     {
         return $this->key;
     }
 
-    /**
-     * @param mixed $key
-     */
-    public function setKey($key): self
+    public function setKey(string $key): self
     {
         $this->key = $key;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param mixed $name
-     */
-    public function setName($name): self
+    public function setName(mixed $name): self
     {
         $this->name = $name;
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -101,7 +85,7 @@ class SettingGroup
 
 
     /**
-     * @return Collection|SettingDefinition[]
+     * @return Collection
      */
     public function getSettings(): Collection
     {

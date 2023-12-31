@@ -6,9 +6,9 @@ use Bytesystems\SettingsBundle\Entity\SettingDefinition;
 
 class Setting
 {
-    const SCOPE_GLOBAL = 'global';
-    const SCOPE_USER = 'user';
-    const SCOPE_DEFAULT = 'default';
+    public const SCOPE_GLOBAL = 'global';
+    public const SCOPE_USER = 'user';
+    public const SCOPE_DEFAULT = 'default';
 
     public $key;
     public $scope;

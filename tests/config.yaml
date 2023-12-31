@@ -13,11 +13,11 @@ doctrine:
       default:
         mappings:
           SettingsBundle:
-            type: annotation
+            type: attribute
             dir: src/Entity
             prefix: Bytesystems\SettingsBundle
           SettingsBundleTest:
-            type: annotation
+            type: attribute
             dir: tests/Entity
             prefix: Bytesystems\SettingsBundle\Tests
 liip_test_fixtures:
